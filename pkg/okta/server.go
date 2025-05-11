@@ -7,12 +7,14 @@ import (
 	"github.com/okta/okta-sdk-golang/v5/okta"
 
 	"github.com/radar07/mcp-server-okta/internal/oktamcp"
+	"github.com/radar07/mcp-server-okta/pkg/toolset"
 )
 
 type Server struct {
-	log    *slog.Logger
-	client *okta.APIClient
-	server oktamcp.Server
+	log      *slog.Logger
+	client   *okta.APIClient
+	server   oktamcp.Server
+	toolsets *toolset.ToolsetGroup
 }
 
 func NewOktaClient(orgURL, token string) *okta.APIClient {
@@ -34,10 +36,16 @@ func NewServer(log *slog.Logger, client *okta.APIClient, enabledToolsets []strin
 
 	server := oktamcp.NewServer("mcp-server-okta", "0.0.1", opts...)
 
+	toolsets, err := NewToolSets(log, client, enabledToolsets, readOnly)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create toolsets: %w", err)
+	}
+
 	srv := &Server{
-		log:    log,
-		client: client,
-		server: server,
+		log:      log,
+		client:   client,
+		server:   server,
+		toolsets: toolsets,
 	}
 
 	return srv, nil

@@ -4,7 +4,9 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 )
 
-type Server interface{}
+type Server interface {
+	AddTools(tools ...Tool)
+}
 
 func NewServer(name, version string, opts ...ServerOption) *mark3labsImpl {
 	// Create option setter to collect mcp options
@@ -24,6 +26,16 @@ func NewServer(name, version string, opts ...ServerOption) *mark3labsImpl {
 type mark3labsImpl struct {
 	mcpServer *server.MCPServer
 	name      string
+}
+
+// AddTools adds tools to the server
+func (s *mark3labsImpl) AddTools(tools ...Tool) {
+	// Convert our Tool to mcp's ServerTool
+	var mcpTools []server.ServerTool
+	for _, tool := range tools {
+		mcpTools = append(mcpTools, tool.toMCPServerTool())
+	}
+	s.mcpServer.AddTools(mcpTools...)
 }
 
 func (s *mark3labsOptionSetter) SetOption(option any) error {
