@@ -48,7 +48,15 @@ func NewServer(log *slog.Logger, client *okta.APIClient, enabledToolsets []strin
 		toolsets: toolsets,
 	}
 
+	// Register tools
+	srv.RegisterTools()
+
 	return srv, nil
+}
+
+// RegisterTools adds all available tools to the server
+func (s *Server) RegisterTools() {
+	s.toolsets.RegisterTools(s.server)
 }
 
 func (s *Server) GetMCPServer() oktamcp.Server {

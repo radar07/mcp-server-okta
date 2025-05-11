@@ -18,6 +18,13 @@ func NewToolSets(
 	toolsetGroup := toolset.NewToolsetGroup(readOnly)
 
 	// Create toolsets
+	users := toolset.NewToolset("users", "Okta Users").
+		AddReadTools(
+			FetchUsers(log, client),
+		)
+
+	// Add toolsets to the group
+	toolsetGroup.AddToolset(users)
 
 	// Enable the requested features
 	if err := toolsetGroup.EnableToolsets(enabledToolsets); err != nil {
