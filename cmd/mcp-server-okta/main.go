@@ -30,10 +30,6 @@ func init() {
 	_ = viper.BindPFlag("toolsets", rootCmd.PersistentFlags().Lookup("toolsets"))
 	_ = viper.BindPFlag("read_only", rootCmd.PersistentFlags().Lookup("read-only"))
 
-	// Set environment variable mappings
-	_ = viper.BindEnv("key", "OKTA_KEY_ID")        // Maps RAZORPAY_KEY_ID to key
-	_ = viper.BindEnv("secret", "OKTA_KEY_SECRET") // Maps RAZORPAY_KEY_SECRET to secret
-
 	rootCmd.AddCommand(stdioCmd)
 }
 
