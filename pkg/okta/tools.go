@@ -19,6 +19,9 @@ func NewToolSets(
 
 	// Create toolsets
 	users := toolset.NewToolset("users", "Okta Users").
+		AddWriteTools(
+			CreateUser(log, client),
+		).
 		AddReadTools(
 			FetchUsers(log, client),
 		)
