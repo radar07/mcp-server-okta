@@ -1,6 +1,6 @@
 # MCP Server for Okta
 
-This server is a 
+This server is an [Model Context Protocol](https://modelcontextprotocol.io/introduction) server that provides seamless integration with Okta's Admin Management APIs. It allows LLM agents to interact with Okta in a programmatic way, enabling automation and enhanced management capabilities.
 
 [![GitHub Stars](https://img.shields.io/github/stars/radar07/mcp-server-okta?style=social)](https://github.com/radar07/mcp-server-okta)
 [![GitHub Issues](https://img.shields.io/github/issues/radar07/mcp-server-okta)](https://github.com/radar07/mcp-server-okta/issues)

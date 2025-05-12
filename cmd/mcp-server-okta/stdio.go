@@ -60,7 +60,7 @@ func runStdioServer(log *slog.Logger, client *oktasdk.APIClient, enabledToolsets
 		return fmt.Errorf("failed to create server: %w", err)
 	}
 
-	stdioServer, err := oktamcp.NewStdioServer(srvr.GetMCPServer())
+	stdioServer, _ := oktamcp.NewStdioServer(srvr.GetMCPServer())
 
 	in, out := io.Reader(os.Stdin), io.Writer(os.Stdout)
 	errC := make(chan error, 1)
