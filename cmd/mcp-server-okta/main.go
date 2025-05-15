@@ -20,7 +20,8 @@ func init() {
 	rootCmd.PersistentFlags().String("api_token", "", "your okta api key")
 	rootCmd.PersistentFlags().String("org_url", "", "your okta org url")
 	rootCmd.PersistentFlags().String("log_file", "", "path to the log file")
-	rootCmd.PersistentFlags().StringSlice("toolsets", []string{}, "comma-separated list of toolsets to enable")
+	rootCmd.PersistentFlags().
+		StringSlice("toolsets", []string{}, "comma-separated list of toolsets to enable")
 	rootCmd.PersistentFlags().Bool("read_only", false, "run server in read-only mode")
 
 	// bind flags to viper

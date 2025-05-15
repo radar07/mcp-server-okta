@@ -51,7 +51,12 @@ var stdioCmd = &cobra.Command{
 	},
 }
 
-func runStdioServer(log *slog.Logger, client *oktasdk.APIClient, enabledToolsets []string, readOnly bool) error {
+func runStdioServer(
+	log *slog.Logger,
+	client *oktasdk.APIClient,
+	enabledToolsets []string,
+	readOnly bool,
+) error {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 

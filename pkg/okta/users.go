@@ -63,7 +63,10 @@ func CreateUser(log *slog.Logger, client *okta.APIClient) oktamcp.Tool {
 			Profile: *profile,
 		}
 
-		user, _, err := client.UserAPI.CreateUser(ctx).Body(createUserRequest).Activate(true).Execute()
+		user, _, err := client.UserAPI.CreateUser(ctx).
+			Body(createUserRequest).
+			Activate(true).
+			Execute()
 		if err != nil {
 			fmt.Printf("Error Creating Users: %v\n", err)
 		}

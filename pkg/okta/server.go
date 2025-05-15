@@ -26,7 +26,12 @@ func NewOktaClient(orgURL, token string) *okta.APIClient {
 	return okta.NewAPIClient(cfg)
 }
 
-func NewServer(log *slog.Logger, client *okta.APIClient, enabledToolsets []string, readOnly bool) (*Server, error) {
+func NewServer(
+	log *slog.Logger,
+	client *okta.APIClient,
+	enabledToolsets []string,
+	readOnly bool,
+) (*Server, error) {
 	// Create default options
 	opts := []oktamcp.ServerOption{
 		oktamcp.WithLogging(),

@@ -15,6 +15,13 @@ linters:
     - revive
     - staticcheck
     - unused
+  settings:
+    revive:
+      rules:
+        - name: exported
+          disabled: true
+        - name: package-comments
+          disabled: true
 
 formatters:
   enable:

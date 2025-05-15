@@ -51,7 +51,11 @@ func (v *Validator) addError(err error) *Validator {
 
 // extractValueGeneric is a standalone generic function to extract a parameter
 // of type T
-func extractValueGeneric[T any](request *oktamcp.CallToolRequest, name string, required bool) (*T, error) {
+func extractValueGeneric[T any](
+	request *oktamcp.CallToolRequest,
+	name string,
+	required bool,
+) (*T, error) {
 	val, ok := request.Arguments[name]
 	if !ok || val == nil {
 		if required {
@@ -75,12 +79,19 @@ func extractValueGeneric[T any](request *oktamcp.CallToolRequest, name string, r
 }
 
 // ValidateAndAddRequiredString validates and adds a required string parameter
-func (v *Validator) ValidateAndAddRequiredString(params map[string]interface{}, name string) *Validator {
+func (v *Validator) ValidateAndAddRequiredString(
+	params map[string]interface{},
+	name string,
+) *Validator {
 	return validateAndAddRequired[string](v, params, name)
 }
 
 // validateAndAddRequired validates and adds a required parameter of any type
-func validateAndAddRequired[T any](v *Validator, params map[string]interface{}, name string) *Validator {
+func validateAndAddRequired[T any](
+	v *Validator,
+	params map[string]interface{},
+	name string,
+) *Validator {
 	value, err := extractValueGeneric[T](v.request, name, true)
 	if err != nil {
 		return v.addError(err)
