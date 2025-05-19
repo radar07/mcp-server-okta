@@ -58,7 +58,45 @@ While this README provides a high-level overview, specific setup and usage instr
 git clone [https://github.com/radar07/mcp-server-okta.git](https://github.com/radar07/mcp-server-okta.git)
 cd mcp-server-okta
 # ... instructions for setting up the environment and installing dependencies ...
+
 ```
+
+## Tools Configuration
+
+This Okta MCP server defines a set of tools that can be used to interact with the Okta APIs. Each tool is designed to perform specific actions, such as creating users, managing groups, and retrieving user information. This is still a work in progress, and the tools are being developed iteratively.
+
+### Users
+
+- **fetch_users**
+
+- **create_user**
+
+- **get_user**
+
+- **update_user**
+
+- **delete_user**
+
+### Groups
+
+- **list_groups**
+
+- **add_group**
+
+- **get_group**
+
+- **update_group**
+
+- **delete_group**
+
+- **list_group_apps**
+
+- **list_group_members**
+
+- **add_user_to_group**
+
+- **remove_user_from_group**
+
 
 ## License
 
