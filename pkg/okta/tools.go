@@ -5,6 +5,7 @@ import (
 
 	okta "github.com/okta/okta-sdk-golang/v5/okta"
 
+	"github.com/radar07/mcp-server-okta/internal/oktamcp"
 	"github.com/radar07/mcp-server-okta/pkg/toolset"
 )
 
@@ -20,10 +21,28 @@ func NewToolSets(
 	// Create toolsets
 	users := toolset.NewToolset("users", "Okta Users").
 		AddWriteTools(
-			CreateUser(log, client),
+			toolset.ToolDefinition{
+				Name:        "create_user",
+				Description: "Use this tool to create a user in the org",
+				Register: func(s *oktamcp.Server) {
+					oktamcp.AddTool(s, &oktamcp.Tool{
+						Name:        "create_user",
+						Description: "Use this tool to create a user in the org",
+					}, CreateUser(log, client))
+				},
+			},
 		).
 		AddReadTools(
-			FetchUsers(log, client),
+			toolset.ToolDefinition{
+				Name:        "fetch_users",
+				Description: "Use this tool to retrieve the users of an org",
+				Register: func(s *oktamcp.Server) {
+					oktamcp.AddTool(s, &oktamcp.Tool{
+						Name:        "fetch_users",
+						Description: "Use this tool to retrieve the users of an org",
+					}, FetchUsers(log, client))
+				},
+			},
 		)
 
 	// Add toolsets to the group

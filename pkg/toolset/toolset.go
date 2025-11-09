@@ -6,14 +6,21 @@ import (
 	"github.com/radar07/mcp-server-okta/internal/oktamcp"
 )
 
+// ToolDefinition holds a tool's metadata and registration function
+type ToolDefinition struct {
+	Name        string
+	Description string
+	Register    func(*oktamcp.Server) // Function that registers the tool with the server
+}
+
 // Toolset represents a group of related tools
 type Toolset struct {
 	Name        string
 	Description string
 	Enabled     bool
 	readOnly    bool
-	writeTools  []oktamcp.Tool
-	readTools   []oktamcp.Tool
+	writeTools  []ToolDefinition
+	readTools   []ToolDefinition
 }
 
 // ToolsetGroup manages multiple toolsets
@@ -43,7 +50,7 @@ func NewToolsetGroup(readOnly bool) *ToolsetGroup {
 }
 
 // AddWriteTools adds write tools to the toolset
-func (t *Toolset) AddWriteTools(tools ...oktamcp.Tool) *Toolset {
+func (t *Toolset) AddWriteTools(tools ...ToolDefinition) *Toolset {
 	if !t.readOnly {
 		t.writeTools = append(t.writeTools, tools...)
 	}
@@ -51,22 +58,22 @@ func (t *Toolset) AddWriteTools(tools ...oktamcp.Tool) *Toolset {
 }
 
 // AddReadTools adds read tools to the toolset
-func (t *Toolset) AddReadTools(tools ...oktamcp.Tool) *Toolset {
+func (t *Toolset) AddReadTools(tools ...ToolDefinition) *Toolset {
 	t.readTools = append(t.readTools, tools...)
 	return t
 }
 
 // RegisterTools registers all active tools with the server
-func (t *Toolset) RegisterTools(s oktamcp.Server) {
+func (t *Toolset) RegisterTools(s *oktamcp.Server) {
 	if !t.Enabled {
 		return
 	}
 	for _, tool := range t.readTools {
-		s.AddTools(tool)
+		tool.Register(s)
 	}
 	if !t.readOnly {
 		for _, tool := range t.writeTools {
-			s.AddTools(tool)
+			tool.Register(s)
 		}
 	}
 }
@@ -116,7 +123,7 @@ func (tg *ToolsetGroup) EnableToolsets(names []string) error {
 }
 
 // RegisterTools registers all active toolsets with the server
-func (tg *ToolsetGroup) RegisterTools(s oktamcp.Server) {
+func (tg *ToolsetGroup) RegisterTools(s *oktamcp.Server) {
 	for _, toolset := range tg.Toolsets {
 		toolset.RegisterTools(s)
 	}

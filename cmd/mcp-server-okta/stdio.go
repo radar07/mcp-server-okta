@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"io"
 	stdlog "log"
 	"log/slog"
 	"os"
@@ -65,29 +64,13 @@ func runStdioServer(
 		return fmt.Errorf("failed to create server: %w", err)
 	}
 
-	stdioServer, _ := oktamcp.NewStdioServer(srvr.GetMCPServer())
-
-	in, out := io.Reader(os.Stdin), io.Writer(os.Stdout)
-	errC := make(chan error, 1)
-	go func() {
-		log.Info("starting server")
-		errC <- stdioServer.Listen(ctx, in, out)
-	}()
-
 	_, _ = fmt.Fprintf(
 		os.Stderr,
 		"Okta MCP Server running on stdio\n",
 	)
 
-	select {
-	case <-ctx.Done():
-		log.Info("shutting down server...")
-		return nil
-	case err := <-errC:
-		if err != nil {
-			log.Error("server error", "error", err)
-			return err
-		}
-		return nil
-	}
+	log.Info("starting server")
+
+	// Run the server using the stdio transport
+	return oktamcp.RunStdio(ctx, srvr.GetMCPServer())
 }
