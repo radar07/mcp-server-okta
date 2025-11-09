@@ -13,7 +13,7 @@ import (
 type Server struct {
 	log      *slog.Logger
 	client   *okta.APIClient
-	server   oktamcp.Server
+	server   *oktamcp.Server
 	toolsets *toolset.ToolsetGroup
 }
 
@@ -32,14 +32,8 @@ func NewServer(
 	enabledToolsets []string,
 	readOnly bool,
 ) (*Server, error) {
-	// Create default options
-	opts := []oktamcp.ServerOption{
-		oktamcp.WithLogging(),
-		oktamcp.WithResourceCapabilities(true, true),
-		oktamcp.WithToolCapabilities(true),
-	}
-
-	server := oktamcp.NewServer("mcp-server-okta", "0.0.1", opts...)
+	// Create the MCP server
+	server := oktamcp.NewServer("mcp-server-okta", "0.0.1")
 
 	toolsets, err := NewToolSets(log, client, enabledToolsets, readOnly)
 	if err != nil {
@@ -64,6 +58,6 @@ func (s *Server) RegisterTools() {
 	s.toolsets.RegisterTools(s.server)
 }
 
-func (s *Server) GetMCPServer() oktamcp.Server {
+func (s *Server) GetMCPServer() *oktamcp.Server {
 	return s.server
 }

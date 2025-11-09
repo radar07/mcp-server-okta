@@ -1,80 +1,37 @@
 package oktamcp
 
 import (
-	"github.com/mark3labs/mcp-go/server"
+	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
-type Server interface {
-	AddTools(tools ...Tool)
+// Server wraps the official MCP SDK server
+type Server struct {
+	mcp *mcp.Server
 }
 
-func NewServer(name, version string, opts ...ServerOption) *mark3labsImpl {
-	// Create option setter to collect mcp options
-	optSetter := &mark3labsOptionSetter{
-		mcpOptions: []server.ServerOption{},
+// NewServer creates a new MCP server with the given name and version
+func NewServer(name, version string) *Server {
+	impl := &mcp.Implementation{
+		Name:    name,
+		Version: version,
 	}
 
-	mcpServer := server.NewMCPServer(name, version, optSetter.mcpOptions...)
+	mcpServer := mcp.NewServer(impl, nil)
 
-	return &mark3labsImpl{
-		mcpServer: mcpServer,
-		name:      name,
-	}
-}
-
-// mark3labsImpl implements the Server interface using mark3labs/mcp-go
-type mark3labsImpl struct {
-	mcpServer *server.MCPServer
-	name      string
-}
-
-// AddTools adds tools to the server
-func (s *mark3labsImpl) AddTools(tools ...Tool) {
-	// Convert our Tool to mcp's ServerTool
-	var mcpTools []server.ServerTool
-	for _, tool := range tools {
-		mcpTools = append(mcpTools, tool.toMCPServerTool())
-	}
-	s.mcpServer.AddTools(mcpTools...)
-}
-
-func (s *mark3labsOptionSetter) SetOption(option any) error {
-	if opt, ok := option.(server.ServerOption); ok {
-		s.mcpOptions = append(s.mcpOptions, opt)
-	}
-	return nil
-}
-
-// mark3labsOptionSetter is used to apply options to the server
-type mark3labsOptionSetter struct {
-	mcpOptions []server.ServerOption
-}
-
-// OptionSetter is an interface for setting options on a configurable object
-type OptionSetter interface {
-	SetOption(option any) error
-}
-
-type ServerOption func(OptionSetter) error
-
-// WithLogging returns a server option that enables logging
-func WithLogging() ServerOption {
-	return func(s OptionSetter) error {
-		return s.SetOption(server.WithLogging())
+	return &Server{
+		mcp: mcpServer,
 	}
 }
 
-// WithResourceCapabilities returns a server option
-// that enables resource capabilities
-func WithResourceCapabilities(read, list bool) ServerOption {
-	return func(s OptionSetter) error {
-		return s.SetOption(server.WithResourceCapabilities(read, list))
-	}
+// GetMCPServer returns the underlying mcp.Server for direct access
+// This is needed for operations like Run() and adding tools
+func (s *Server) GetMCPServer() *mcp.Server {
+	return s.mcp
 }
 
-// WithToolCapabilities returns a server option that enables tool capabilities
-func WithToolCapabilities(enabled bool) ServerOption {
-	return func(s OptionSetter) error {
-		return s.SetOption(server.WithToolCapabilities(enabled))
-	}
+// AddTools is a placeholder method for compatibility
+// Tools should now be added directly using oktamcp.AddTool or mcp.AddTool
+func (s *Server) AddTools(tools ...any) {
+	// This method exists for compatibility with the toolset package
+	// but tools are now added using the generic AddTool function
 }

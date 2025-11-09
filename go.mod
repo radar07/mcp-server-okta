@@ -3,7 +3,7 @@ module github.com/radar07/mcp-server-okta
 go 1.24.1
 
 require (
-	github.com/mark3labs/mcp-go v0.26.0
+	github.com/modelcontextprotocol/go-sdk v1.1.0
 	github.com/okta/okta-sdk-golang/v5 v5.0.5
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.20.1
@@ -16,6 +16,7 @@ require (
 	github.com/go-jose/go-jose/v3 v3.0.3 // indirect
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
+	github.com/google/jsonschema-go v0.3.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/kelseyhightower/envconfig v1.4.0 // indirect
@@ -38,7 +39,7 @@ require (
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/crypto v0.32.0 // indirect
-	golang.org/x/oauth2 v0.25.0 // indirect
+	golang.org/x/oauth2 v0.30.0 // indirect
 	golang.org/x/sys v0.29.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
